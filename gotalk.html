@@ -43,6 +43,370 @@
 
       <article>
         <h1>
+          Concurrency 
+          <br>
+        </h1>
+      </article>
+
+      <article class='smaller'>
+        <h3>
+        Main concepts: Goroutines
+        </h3>
+        <ul>
+          <li>
+            A method executing concurrently in the same address space.
+          </li>
+          <li>
+			Multiplexed onto OS threads (M:N model).
+		  </li>
+          <li>
+            Natively supported by the language.
+          </li>
+          <li>
+            Just prefix a function invocation with the go keyword. 
+          </li>
+        </ul>
+        <pre class="prettyprint">
+<code>
+  go func() { fmt.Print("Hello Concurrent World!") } ()
+</code>
+        </pre>
+        
+      </article>
+
+      <article class='smaller' style='
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;'>
+        <h3>
+        An example - A simple Netcat-like tool
+        </h3>
+        <table style='margin-top: 10px;' class='build'>
+          <tr>
+            <td style="border: 0">
+              <pre class="prettyprint" style='margin-top: 0px; margin-bottom: 0px;'>
+<code>
+func main() {
+	if len(os.Args) != 2 {
+		fmt.Printf("Usage: %s &lturl&gt:&ltport&gt\n", os.Args[0])
+		os.Exit(-1)
+	}
+	url := os.Args[1]
+	
+	var urlAddress *net.TCPAddr
+	var urlConn *net.TCPConn
+	var err error
+
+	if urlAddress, err = net.ResolveTCPAddr("tcp4", url); err != nil {
+		fmt.Printf("Error resolving URL address: %s\n", url)
+		os.Exit(-1)
+	}
+
+	if urlConn, err = net.DialTCP("tcp", nil, urlAddress); err != nil {
+		fmt.Printf("Error connecting to URL: %s\n", urlAddress)
+		os.Exit(-1)
+	}
+	go monkey(os.Stdin, urlConn, 1024)
+	monkey(bufio.NewReader(urlConn), os.Stdout, 1024)
+}
+</code>
+        </pre>
+             </td>
+            <td style="border: 0">
+              <ul>
+                <li>
+                  A method executing concurrently in the same address space.
+                </li>
+                <li>
+			      Multiplexed onto OS threads (M:N model).
+		        </li>
+                <li>
+                  Natively supported by the language.
+                </li>
+                <li>
+                  Just prefix a function invocation with the go keyword. 
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </table>       
+      </article>
+
+      <article class='smaller'>
+        <h3>
+        Main concepts: Goroutines
+        </h3>
+        <p>
+        The writer function just moves chunks of data from reader into a writer
+        </p>
+        <pre class="prettyprint">
+<code>
+func monkey(r io.Reader, to io.Writer, bufSize int) {
+  b := make([]byte, bufSize)
+  for {
+    n, err := r.Read(b)
+    if err != nil {
+      return
+    }
+    if n > 0 {
+      to.Write(b[0:n])
+    }
+  }
+}
+</code>
+        </pre>
+        
+      </article>
+
+      <article class='smaller'>
+        <h3>
+        Communication
+        </h3>
+        <ul class="build">
+          <li>
+			Goroutines are not quite useful if they can't communicate with each other.
+          </li>
+          <li>
+			But communicating by sharing memory has a lot of well-known drawbacks.
+		    <ul class="build">
+		    <li>
+		    Lock based solutions don't compose.		  
+		    </li>
+		    <li>
+		    Deadlock prone.
+		    </li>
+		    <li>
+		    Hard to reason.
+		    </li>
+		    </ul>
+		  </li>
+          <li>
+			"Do not communicate by sharing memory; instead, share memory by communicating."
+          </li>
+          <li>
+            Go channels to the rescue! 
+          </li>
+        </ul>
+      </article>
+
+      <article class='smaller'>
+        <h3>
+        Channels
+        </h3>
+        <ul class="build">
+          <li>
+			Inspired on Tony Hoare's ideas of concurrency in CSP.
+		    <ul class="build">
+		    <li>
+			Rendezvous model.
+		    </li>
+		    <li>
+		    But support both syncronous/asynchronous message passing.
+		    </li>
+		    <li>
+			They are not tied to a goroutine like in the actor model.		    
+			</li>
+		    </ul>
+		  </li>
+          <li>
+			Two main use cases: 
+			<ul class="build">
+		    <li>
+			Communication.
+		    </li>
+		    <li>
+			Coordination.
+			</li>
+			</ul>
+          </li>
+        </ul>
+      </article>
+
+      <article class='smaller'>
+        <h3>
+        Channels
+        </h3>
+        <ul class="build">
+          <li>
+          	Channels are reference types, so they are created using make (instead of new) 
+        <pre class="prettyprint" style="margin-top: 10px; margin-bottom: 10px;">
+<code>
+  myChannel := make(chan string)
+  bufferedChannel := make(chan string, 1024)                
+</code>
+        </pre>
+		  </li>
+          <li>
+			Some constraints can be added to restrict the usage of a channel 
+          <pre class="prettyprint" style="margin-top: 10px; margin-bottom: 10px;">
+<code>
+  receiverChannel := make(chan<- string)
+  senderChannel := make(<-chan string)
+</code>
+        </pre>
+		  </li>
+          <li>
+    	    Two operators for send/receive   
+          <pre class="prettyprint" style="margin-top: 10px; margin-bottom: 10px;">
+<code>
+  myChannel <- "This is a message" //Sends a message
+  msg := <- myChannel // Receives the message
+  msg, ok := <- myChannel // ok is true while the channel is open
+</code>
+        </pre>
+        </li>
+        </ul>
+      </article>
+
+      <article class='smaller'>
+        <h3>
+        Channels
+        </h3>
+        <ul class="build">
+          <li>
+    		Channels can be closed to indicate that there are no more messages.
+        <pre class="prettyprint" >
+<code>
+    receiverChannel := make(chan<- string)
+    close(receiverChannel)
+</code>
+        </pre>
+		  </li>
+          <li>
+			A client can pull for messages until the channel is closed.
+          <pre class="prettyprint" >
+<code>
+  for msg := range(senderChannel) {
+      fmt.Print(msg)
+  }
+</code>
+        </pre>
+		  </li>
+        </ul>
+      </article>
+
+      <article class='smaller'>
+        <h3>
+        Channels
+        </h3>
+		<p>
+			Reading from multiple channels: Select
+		</p>
+		<ul class='build'>
+		<li>
+		    A "select" statement chooses which of a set of possible communications will proceed.
+		</li>
+		<li>
+		    It looks similar to a "switch" statement but with the cases all referring to communication operations. 
+		</li>
+		</ul>
+        <table style="margin-top: 0px;">
+        <tr>
+          <td style="border: 0px" class="build">
+            <pre class="prettyprint" style="margin-top: 0px;">
+<code>
+select {
+  case i1 := <-c1:
+	print("received ", i1, " from c1\n")
+  case c2 <- 1:
+	print("sent 1 to c2\n")
+case i3, ok := (<-c3):  // same as: i3, ok := <-c3
+	if ok {
+		print("received ", i3, " from c3\n")
+	} else {
+		print("c3 is closed\n")
+	}
+default:
+	print("no communication\n")
+}</code>
+            </pre>
+          </td>
+          <td style="border: 0px">
+            <ul class="build">
+            <li>
+            All the channel expressions are evaluated.
+            </li>
+            <li>
+            One channel expression per case statement 
+            </li>
+            <li>
+            Send and receive expressions are allowed.
+            </li>
+            <li>
+            If all the channels expression will block, default wins.  
+            </li>
+            <li>
+            Can be used for non-blocking reads.
+            </li>
+            </ul>
+          </td>
+        </tr>        
+        </table>
+      </article>
+
+      <article class="smaller">
+        <h3>
+        Channels: Some idioms
+        </h3>
+        <ul class="build">
+        <li>
+        <p>
+          Generators à la Python
+        </p>
+        <p>
+          Basically, a generator is a function that returns a channel. The client can iterate over
+          that channel.
+        </p>
+          <pre class="prettyprint" style="margin-top: 0px;">
+<code>
+func to(n int) (c chan int) {
+  c = make(chan int)
+  go func() {
+    defer close(c)
+    for i := 0; i &lt n; i++ {
+      c &lt- i // yield a new value
+    }
+  }()
+  return
+}
+
+func main() {
+  for i := range(to(42)) {
+    fmt.Print(i)
+  }
+}
+</code>
+        </li>
+        </ul>
+      </article>
+
+      <article class='smaller'>
+        <h3 class='build'>
+	  Some thoughts on concurrency and parallelism
+        </h3>
+	  <ul class='build'>
+	  <li>
+		  Concurrency is not parallelism
+	  </li>
+	  <li>
+	      Concurrency is about the composition of independently executing processes. Make happens-before relation a little less restrictive.
+	  </li>
+	  <li>
+	      Parallelism is about doing lots of things at once. 
+	  </li>
+	  <li>
+	      Concurrency is useful to design some kind of problems (e.g: our netcat example)
+	    </li>
+	  <li>
+	      Concurrency enables parallelism.
+	    </li>
+	  </ul>
+      </article>
+
+      
+      <article>
+        <h1>
           A tour of Go 
           <br>
           <br>
@@ -366,7 +730,10 @@
         </ul>
       </article>
 
+
+
     </section>
+
 
   </body>
 </html>
