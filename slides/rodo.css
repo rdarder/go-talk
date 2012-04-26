@@ -1,0 +1,104 @@
+.rodo h3 {
+    font-size: 40px;
+    margin-bottom: 40px;
+    color: rgb(255, 200, 50);
+}
+
+h1 {
+    color: rgb(255, 200, 50);
+}
+
+.rodo h4 {
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+
+.rodo li {
+    margin-bottom: 0px;
+}
+
+
+.rodo ul {
+    margin-top: 0px;
+}
+
+.rodo ul > ul {
+    margin-left: 45px;
+    font-size: 22px;
+    line-height: 28px;
+}
+
+.rodo pre {
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0px;
+  margin: 0px;
+}
+
+.rodo .leftside {
+    float:left;
+    margin-left: 0px;
+}
+
+.rodo .rightside {
+    margin-left:500px;
+}
+
+.rodo .sidelist > ul > li {
+    font-size: 22px;
+    line-height: 28px;
+    margin-top: 25px;
+}
+
+.rodo .sidelist ul > ul {
+    font-size: 18px;
+    line-height: 20px;
+}
+
+.article-structs .rightside {
+    margin-left: 350px;
+}
+
+.article-structs .rightside ul > li {
+    margin-top: 10px;
+}
+
+.article-structs .leftside pre {
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.article-functions .leftside pre {
+  font-size: 13px;
+  line-height: 13px;
+}
+
+.article-functions .rightside {
+  margin-left: 400px;
+  margin-top: 100px;
+}
+
+.article-methods .rightside {
+  margin-left: 450px;
+  margin-top: 75px;
+}
+
+
+.article-interfaces .rightside {
+  margin-left: 400px;
+}
+
+.article-interfaces .sidelist > ul > li {
+    font-size: 22px;
+    line-height: 26px;
+    margin-top: 15px;
+}
+
+.article-interfaces .leftside pre {
+  font-size: 13px;
+  line-height: 13px;
+}
+
+.article-branches div {
+  margin: 15px;
+}

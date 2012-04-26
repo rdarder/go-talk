@@ -299,10 +299,10 @@ b {
 }
 
 a {
-  color: rgb(0, 102, 204);
+  color: #678CB1;
 }
 a:visited {
-  color: rgba(0, 102, 204, .75);
+  color: #678CB1;
 }
 a:hover {
   color: black;
@@ -605,14 +605,14 @@ article.smaller q::after {
 }  
 .prettyprint .kwd, /* a keyword */
 .prettyprint .tag { /* a markup tag name */
-  color: rgb(0, 102, 204);
+  color: #678CB1;
 }
 .prettyprint .com { /* a comment */
   color: rgb(127, 127, 127); 
   font-style: italic; 
 }  
 .prettyprint .lit { /* a literal value */
-  color: rgb(127, 0, 0);
+  color: #b8860b;
 }  
 .prettyprint .pun, /* punctuation, lisp open bracket, lisp close bracket */
 .prettyprint .opn, 
@@ -623,5 +623,5 @@ article.smaller q::after {
 .prettyprint .atn, /* a markup attribute name */ 
 .prettyprint .dec, 
 .prettyprint .var { /* a declaration; a variable name */
-  color: rgb(127, 0, 127);
+  color: orangered;
 }  
