@@ -113,13 +113,11 @@ body {
   background-color: #404040;
 }
 
-.slides.template-golang > article:not(.nobackground):not(.biglogo) {
+.slides.template-golang > article:not(.nobackground):not(.biglogo):not(.taller){
   background: url(../images/gopher_path.png) 0 625px repeat-x,
               url(../images/globant_small_dark.png) 825px 640px no-repeat,
               url(../images/gopher_cut.png) 100px 200px no-repeat;
-
-
-  background-color: #404040;  
+  background-color: #404040;
 }
 
 .slides.layout-widescreen > article:not(.nobackground):not(.biglogo),
