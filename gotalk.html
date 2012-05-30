@@ -1156,6 +1156,11 @@ type CacheStorage interface {
               </div>
 
       </article>
+      <article class="wider">
+        <h3>Design - Phase 2 - Type Diagram</h3>
+        <img class='centered' style='height: 550px'
+             src='images/uml/MapStorage.png'>
+      </article>
 
       <article>
           <h3>Design - Phase 3 - Sync and Partitioning</h3>
@@ -1214,6 +1219,11 @@ func (self *HashingStorage) Add(key string, flags uint32, exptime uint32, bytes 
 
           </ul>
 
+      </article>
+      <article class="wider">
+        <h3>Design - Phase 3 - Type Diagram</h3>
+        <img class='centered' style='height: 550px'
+             src='images/uml/Partitioning.png'>
       </article>
       <article>
           <h3>Design - Phase 4 - Expiration</h3>
@@ -1365,8 +1375,13 @@ type EventNotifierStorage struct {
                 <li>bookkeeping will expire entries on the target storage when appropiate</li>
         </ul>
     </article>
+      <article class="wider">
+        <h3>Design - Phase 3 - Type Diagram</h3>
+        <img class='centered' style='height: 550px'
+             src='images/uml/Notification.png'>
+      </article>
 
-    <article>
+      <article>
         <h3>Event notification</h3>
         <a target="_blank" class="ref"
            href="https://github.com/rdarder/gocached/blob/master/eventnotifierstorage.go#L33">eventnotifierstorage.go:33</a>
@@ -1415,11 +1430,16 @@ case "heap":
         <ul class="build">
             <li>Less than 1k SLOC</li>
             <li>Mostly memcached compliant</li>
-            <li>Informal benchmarks: gocached runs 30% slower than memcached</li>
+            <li>Informal benchmarks: gocached runs 30% slower than
+              memcached. Without even tuning for performance!</li>
             <li>Easy to read and modify</li>
         </ul>
     </article>
+    <article>
+      <h1>Questions?</h1>
+    </article>
+      <article class='biglogo'>
+      </article>
     </section>
-
   </body>
 </html>
