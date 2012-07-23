@@ -1,0 +1,38 @@
+.cols2 .left {
+    float: left;
+    width: 47%;
+}
+.cols2 .right {
+    float: right;
+    width: 47%;
+}
+
+.slides article.taller {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: none;
+}
+
+.slides.template-golang > article.taller{
+    background: url(../images/gopher_cut.png) 100px 200px no-repeat;
+    background-color: #404040;
+}
+
+.slides article.wider{
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
+.slides .rafa.prettyprint{
+    margin: 15px -15px 0px -15px;
+    padding-left: 20px;
+    font-size: 16px;
+    line-height: 18px;
+    white-space: pre-wrap;
+}
+
+a.ref {
+    font-size: 20px;
+    line-height: 24px;
+    float: right;
+}
